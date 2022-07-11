@@ -9,12 +9,16 @@ import OlympicWinnersService from './olympicWinnersService';
 const app = express();
 app.use(webpackMiddleware(webpack(webpackConfig)));
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post('/olympicWinners', function (req, res) {
+app.post('/olympicWinners', function(req, res) {
+    console.log('req.body ');
+    console.log(JSON.stringify(req.body));
     OlympicWinnersService.getData(req.body, (rows, lastRow) => {
-        res.json({rows: rows, lastRow: lastRow});
+        res.json({ rows: rows, lastRow: lastRow });
+        //console.log('responce : ');
+        //console.log({ rows: rows, lastRow: lastRow });
     });
 });
 

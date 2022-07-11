@@ -1,9 +1,9 @@
 import mysql from 'mysql';
 
 const connection = mysql.createConnection({
-    host: 'localhost',
+    host: 'a2fca.k.dedikuoti.lt',
     user: 'reporting_app',
-    password: 'password123'
+    password: 'Mak@liause685'
 });
 
 class OlympicWinnersService {
@@ -13,6 +13,8 @@ class OlympicWinnersService {
         const SQL = this.buildSql(request);
 
         connection.query(SQL, (error, results) => {
+            console.log('results : ');
+            console.log(JSON.stringify(results));
             const rowCount = this.getRowCount(request, results);
             const resultsForPage = this.cutResultsToPageSize(request, results);
 
@@ -48,7 +50,7 @@ class OlympicWinnersService {
             const rowGroupCol = rowGroupCols[groupKeys.length];
             colsToSelect.push(rowGroupCol.field);
 
-            valueCols.forEach(function (valueCol) {
+            valueCols.forEach(function(valueCol) {
                 colsToSelect.push(valueCol.aggFunc + '(' + valueCol.field + ') as ' + valueCol.field);
             });
 
@@ -120,7 +122,7 @@ class OlympicWinnersService {
         const whereParts = [];
 
         if (groupKeys.length > 0) {
-            groupKeys.forEach(function (key, index) {
+            groupKeys.forEach(function(key, index) {
                 const colName = rowGroupCols[index].field;
                 whereParts.push(colName + ' = "' + key + '"')
             });
@@ -128,7 +130,7 @@ class OlympicWinnersService {
 
         if (filterModel) {
             const keySet = Object.keys(filterModel);
-            keySet.forEach(function (key) {
+            keySet.forEach(function(key) {
                 const item = filterModel[key];
                 whereParts.push(that.createFilterSql(key, item));
             });
@@ -170,9 +172,9 @@ class OlympicWinnersService {
 
             const groupColIds =
                 rowGroupCols.map(groupCol => groupCol.id)
-                    .slice(0, groupKeys.length + 1);
+                .slice(0, groupKeys.length + 1);
 
-            sortModel.forEach(function (item) {
+            sortModel.forEach(function(item) {
                 if (grouping && groupColIds.indexOf(item.colId) < 0) {
                     // ignore
                 } else {
